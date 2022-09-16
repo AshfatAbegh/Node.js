@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous">
+    <title>Document</title>
+</head>
+<body>
+    <h1>Node and MongoDB site</h1>
+    <p id = "username"></p>
+    <div class="container">
+        <div class="row">
+            <input type="text" class="form-control" id="user">
+            <button class="btn btn-primary" id="addUser">Add User</button>
+        </div>
+    </div>
+    <script>
+        //Get Method
+        fetch('http://localhost:4000/users/1')
+        .then(res => res.json())
+        .then(data => {
+            document.getElementById('username').innerText = data.name;
+        });
+
+        //Post Data to the server
+        const btnaddUser = document.getElementById('addUser');
+        btnaddUser.addEventListener('click', () => {
+            const name = document.getElementById('user').value;
+            const user = {name};
+            //Post Method
+            fetch('http://localhost:4000/addUser',{
+                method: 'POST',
+                body: JSON.stringify(user),
+                headers: {
+                      'Content-type': 'application/json; charset=UTF-8',
+                         }
+            })
+             .then(res => res.json())
+             .then(data => updateUser(data)) 
+        })
+
+             function updateUser(user){
+                document.getElementById('username').innerText = user.name;
+             }
+    </script>
+</body>
+</html>
